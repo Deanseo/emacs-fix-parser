@@ -1,11 +1,23 @@
-;; Description:
-;; A function to parse FIX messages.  If a region is selected, it parses the selected text as a
+;;; fix-parser.el --- A FIX sequence message parser written in Emacs Lisp for Emacs. -*- lexical-binding: t; -*-
+
+;; Copyright (C) 2025 Dean Seo
+
+;; Author: Dean Seo <deaniac.seo@gmail.com>
+;; Maintainer: Dean Seo <deaniac.seo@gmail.com>
+;; Created: June 23, 2025
+;; Version: 0.1.0
+;; Package-Requires: ((emacs "29.3"))
+;; Keywords: convenience
+;; URL: https://github.com/Deanseo/emacs-fix-parser
+
+;;; Commentary:
+
+;; This package provides a function to parse FIX messages.  If a region is selected, it parses the selected text as a
 ;; single FIX message.  If no region is selected, it scans the entire buffer for FIX messages and parses each
 ;; one. Results are displayed as formatted org-mode tables in a new window.  This version fixes the "Invalid
 ;; regexp" error for whole-buffer parsing.
 
-;;; FIX 4.4 Tag Dictionary for Emacs Lisp This variable defines a hash table that maps FIX tag numbers (as
-;;; strings) to their corresponding field names as per the FIX 4.4 specification.
+;;; Code:
 
 (defvar fix-parser/fix-tag-dictionary-4.4
   (let ((dict (make-hash-table :test 'equal)))
@@ -1073,4 +1085,4 @@ parses each one.  The message is expected to use '|' as the field separator."
                                        (window-width . 0.5)))
         (message "Parsed %d FIX message(s)." (length tables))))))
 
-(provide 'fix-message-parser)
+(provide 'fix-parser)
