@@ -1,0 +1,83 @@
+* emacs-fix-parser
+A FIX sequence message parser written in Emacs Lisp for Emacs.
+
+* Sample
+#+BEGIN_EXAMPLE
+  8=FIX.4.2|9=178|35=D|34=1|49=SENDERCOMPID|56=TARGETCOMPID|52=20240701-15:30:00.000|11=ORDER12345|21=1|1=ACCOUNT001|55=AAPL|54=1|38=100|40=2|44=150.00|59=0|10=123|
+  8=FIX.4.2|9=200|35=G|34=2|49=SENDERCOMPID|56=TARGETCOMPID|52=20240701-15:30:05.000|11=AMENDORDER67890|41=ORDER12345|37=EXCHORDID123|55=AAPL|54=1|38=50|40=2|44=151.00|10=456|
+  8=FIX.4.2|9=220|35=8|34=3|49=TARGETCOMPID|56=SENDERCOMPID|52=20240701-15:30:10.000|37=EXCHORDID123|11=ORDER12345|17=EXECID98765|20=0|150=2|39=2|55=AAPL|54=1|38=100|14=100|6=150.00|151=0|10=789|
+#+END_EXAMPLE
+
+Use =C-c f t= or =fix-parser/parse-fix-message=:
+#+BEGIN_EXAMPLE
+  | Tag (Name)        | Value                 |
+  |-------------------+-----------------------|
+  | 8 (BeginString)   | FIX.4.2               |
+  | 9 (BodyLength)    | 178                   |
+  | 35 (MsgType)      | D                     |
+  | 34 (MsgSeqNum)    | 1                     |
+  | 49 (SenderCompID) | SENDERCOMPID          |
+  | 56 (TargetCompID) | TARGETCOMPID          |
+  | 52 (SendingTime)  | 20240701-15:30:00.000 |
+  | 11 (ClOrdID)      | ORDER12345            |
+  | 21 (HandlInst)    | 1                     |
+  | 1 (Account)       | ACCOUNT001            |
+  | 55 (Symbol)       | AAPL                  |
+  | 54 (Side)         | 1                     |
+  | 38 (OrderQty)     | 100                   |
+  | 40 (OrdType)      | 2                     |
+  | 44 (Price)        | 150.00                |
+  | 59 (TimeInForce)  | 0                     |
+  | 10 (CheckSum)     | 123                   |
+
+  | Tag (Name)        | Value                 |
+  |-------------------+-----------------------|
+  | 8 (BeginString)   | FIX.4.2               |
+  | 9 (BodyLength)    | 200                   |
+  | 35 (MsgType)      | G                     |
+  | 34 (MsgSeqNum)    | 2                     |
+  | 49 (SenderCompID) | SENDERCOMPID          |
+  | 56 (TargetCompID) | TARGETCOMPID          |
+  | 52 (SendingTime)  | 20240701-15:30:05.000 |
+  | 11 (ClOrdID)      | AMENDORDER67890       |
+  | 41 (OrigClOrdID)  | ORDER12345            |
+  | 37 (OrderID)      | EXCHORDID123          |
+  | 55 (Symbol)       | AAPL                  |
+  | 54 (Side)         | 1                     |
+  | 38 (OrderQty)     | 50                    |
+  | 40 (OrdType)      | 2                     |
+  | 44 (Price)        | 151.00                |
+  | 10 (CheckSum)     | 456                   |
+
+  | Tag (Name)         | Value                 |
+  |--------------------+-----------------------|
+  | 8 (BeginString)    | FIX.4.2               |
+  | 9 (BodyLength)     | 220                   |
+  | 35 (MsgType)       | 8                     |
+  | 34 (MsgSeqNum)     | 3                     |
+  | 49 (SenderCompID)  | TARGETCOMPID          |
+  | 56 (TargetCompID)  | SENDERCOMPID          |
+  | 52 (SendingTime)   | 20240701-15:30:10.000 |
+  | 37 (OrderID)       | EXCHORDID123          |
+  | 11 (ClOrdID)       | ORDER12345            |
+  | 17 (ExecID)        | EXECID98765           |
+  | 20 (ExecTransType) | 0                     |
+  | 150 (ExecType)     | 2                     |
+  | 39 (OrdStatus)     | 2                     |
+  | 55 (Symbol)        | AAPL                  |
+  | 54 (Side)          | 1                     |
+  | 38 (OrderQty)      | 100                   |
+  | 14 (CumQty)        | 100                   |
+  | 6 (AvgPx)          | 150.00                |
+  | 151 (LeavesQty)    | 0                     |
+  | 10 (CheckSum)      | 789                   |
+#+END_EXAMPLE
+
+* Installation
+.
+
+* Misc
+Use with =org-pretty-table= to print a pretty unicode table.
+
+* License
+Please read [[file:LICENSE][LICENSE]].
